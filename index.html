@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="Gowtham - AI Agent Developer building production-ready AI agents, RAG systems, security automation, and developer tooling." />
+<title>Gowtham - AI Agent Developer</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    color-scheme: dark;
+    --bg: #080a12;
+    --bg-2: #0d111f;
+    --panel: rgba(255,255,255,0.065);
+    --panel-strong: rgba(255,255,255,0.105);
+    --text: #f7f9ff;
+    --muted: #a9b2c7;
+    --soft: #737e98;
+    --line: rgba(255,255,255,0.13);
+    --line-strong: rgba(255,255,255,0.24);
+    --brand: #8b5cf6;
+    --brand-2: #22d3ee;
+    --brand-3: #34d399;
+    --warning: #f59e0b;
+    --shadow: 0 24px 80px rgba(0,0,0,0.42);
+    --radius-xl: 28px;
+    --radius-lg: 20px;
+    --radius-md: 14px;
+    --max: 1120px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background:
+      radial-gradient(circle at top left, rgba(139,92,246,0.32), transparent 34rem),
+      radial-gradient(circle at top right, rgba(34,211,238,0.22), transparent 32rem),
+      linear-gradient(180deg, var(--bg), var(--bg-2) 52%, #070810);
+    color: var(--text);
+    line-height: 1.6;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
+    background-size: 44px 44px;
+    mask-image: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent 70%);
+  }
+
+  a { color: inherit; }
+
+  .shell { width: min(var(--max), calc(100% - 40px)); margin: 0 auto; }
+
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    backdrop-filter: blur(18px);
+    background: rgba(8,10,18,0.74);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .nav-inner {
+    width: min(var(--max), calc(100% - 40px));
+    margin: 0 auto;
+    min-height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+  }
+
+  .brand-mark { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+  .avatar {
+    width: 42px; height: 42px; border-radius: 15px;
+    background: linear-gradient(135deg, var(--brand), var(--brand-2));
+    display: grid; place-items: center;
+    font-weight: 800;
+    box-shadow: 0 12px 36px rgba(139,92,246,0.35);
+  }
+  .brand-copy strong { display: block; font-size: 14px; letter-spacing: 0.01em; }
+  .brand-copy span { display: block; font-size: 12px; color: var(--muted); margin-top: -2px; }
+
+  .nav-links { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+  .nav-links a, .btn {
+    border: 1px solid var(--line);
+    background: rgba(255,255,255,0.055);
+    color: var(--muted);
+    text-decoration: none;
+    border-radius: 999px;
+    padding: 9px 14px;
+    font-size: 13px;
+    font-weight: 700;
+    transition: transform 160ms ease, border-color 160ms ease, background 160ms ease, color 160ms ease;
+  }
+  .nav-links a:hover, .btn:hover { transform: translateY(-1px); border-color: var(--line-strong); color: var(--text); background: rgba(255,255,255,0.09); }
+  .btn.primary { color: #061018; border-color: transparent; background: linear-gradient(135deg, #c4b5fd, #67e8f9); box-shadow: 0 16px 42px rgba(34,211,238,0.2); }
+  .btn.ghost { color: var(--text); }
+
+  .hero { padding: 92px 0 56px; display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 46px; align-items: center; }
+  .eyebrow { display: inline-flex; align-items: center; gap: 9px; padding: 8px 12px; border: 1px solid var(--line); border-radius: 999px; background: rgba(255,255,255,0.055); color: var(--muted); font-size: 13px; font-weight: 700; margin-bottom: 22px; }
+  .pulse { width: 8px; height: 8px; border-radius: 50%; background: var(--brand-3); box-shadow: 0 0 0 7px rgba(52,211,153,0.12); }
+  h1 { font-size: clamp(46px, 7vw, 82px); line-height: 0.96; letter-spacing: -0.07em; max-width: 760px; }
+  .gradient-text { background: linear-gradient(135deg, #fff, #c4b5fd 40%, #67e8f9 82%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .lead { max-width: 720px; margin-top: 24px; color: var(--muted); font-size: clamp(17px, 2vw, 21px); }
+  .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 30px; }
+
+  .hero-panel {
+    position: relative;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-xl);
+    background: linear-gradient(180deg, rgba(255,255,255,0.11), rgba(255,255,255,0.045));
+    box-shadow: var(--shadow);
+    padding: 22px;
+    overflow: hidden;
+  }
+  .hero-panel::before { content: ""; position: absolute; inset: -40% -20% auto auto; width: 230px; height: 230px; background: rgba(34,211,238,0.22); filter: blur(38px); border-radius: 999px; }
+  .terminal { position: relative; border: 1px solid var(--line); border-radius: 20px; background: rgba(4,6,12,0.7); overflow: hidden; }
+  .terminal-top { height: 42px; border-bottom: 1px solid var(--line); display: flex; align-items: center; gap: 8px; padding: 0 15px; }
+  .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--soft); opacity: 0.7; }
+  .terminal-body { padding: 20px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 13px; color: #c9d4eb; }
+  .terminal-line { margin-bottom: 12px; }
+  .terminal-line span { color: #67e8f9; }
+  .terminal-line strong { color: #a7f3d0; font-weight: 700; }
+  .metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 14px; }
+  .metric { border: 1px solid var(--line); border-radius: 18px; padding: 16px; background: rgba(255,255,255,0.055); }
+  .metric strong { display: block; font-size: 24px; line-height: 1; letter-spacing: -0.04em; }
+  .metric span { color: var(--soft); font-size: 12px; font-weight: 700; }
+
+  section { padding: 34px 0; }
+  .section-head { display: flex; align-items: end; justify-content: space-between; gap: 24px; margin-bottom: 20px; }
+  .section-kicker { color: var(--brand-2); text-transform: uppercase; letter-spacing: 0.14em; font-size: 12px; font-weight: 900; margin-bottom: 8px; }
+  h2 { font-size: clamp(28px, 4vw, 44px); line-height: 1.04; letter-spacing: -0.045em; }
+  .section-head p { color: var(--muted); max-width: 480px; font-size: 15px; }
+
+  .project-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .project-card {
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-xl);
+    padding: 22px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.09), rgba(255,255,255,0.04));
+    overflow: hidden;
+    text-decoration: none;
+    transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
+  }
+  .project-card:hover { transform: translateY(-5px); border-color: var(--line-strong); background: linear-gradient(180deg, rgba(255,255,255,0.13), rgba(255,255,255,0.055)); }
+  .project-card.featured { grid-column: span 2; }
+  .project-card::after { content: ""; position: absolute; inset: auto -80px -90px auto; width: 180px; height: 180px; border-radius: 999px; filter: blur(28px); opacity: 0.35; background: var(--accent, var(--brand)); }
+  .card-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 22px; position: relative; z-index: 1; }
+  .icon { width: 50px; height: 50px; border-radius: 18px; display: grid; place-items: center; background: rgba(255,255,255,0.08); border: 1px solid var(--line); }
+  .status { font-size: 12px; color: #cbd5e1; border: 1px solid var(--line); border-radius: 999px; padding: 6px 10px; background: rgba(0,0,0,0.16); font-weight: 800; white-space: nowrap; }
+  .project-card h3 { position: relative; z-index: 1; font-size: 23px; line-height: 1.08; letter-spacing: -0.03em; margin-bottom: 12px; }
+  .project-card p { position: relative; z-index: 1; color: var(--muted); font-size: 14.5px; margin-bottom: 18px; }
+  .tags { position: relative; z-index: 1; display: flex; flex-wrap: wrap; gap: 7px; margin-top: auto; padding-top: 8px; }
+  .tag { border: 1px solid var(--line); border-radius: 999px; background: rgba(255,255,255,0.055); color: #cbd5e1; padding: 6px 9px; font-size: 11px; font-weight: 800; }
+  .proof { position: relative; z-index: 1; display: grid; gap: 9px; padding: 14px 0 18px; color: #dbeafe; font-size: 13px; }
+  .proof span { display: flex; gap: 8px; align-items: flex-start; }
+  .card-actions { position: relative; z-index: 1; display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; }
+  .mini-link { display: inline-flex; align-items: center; gap: 7px; text-decoration: none; border: 1px solid var(--line); border-radius: 999px; padding: 9px 12px; color: var(--text); font-size: 13px; font-weight: 800; background: rgba(255,255,255,0.055); }
+  .mini-link:hover { border-color: var(--line-strong); }
+
+  .stack-grid, .value-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+  .tile { border: 1px solid var(--line); border-radius: 20px; padding: 18px; background: rgba(255,255,255,0.055); }
+  .tile strong { display: block; font-size: 15px; margin-bottom: 5px; }
+  .tile span { color: var(--muted); font-size: 13px; }
+
+  .about-card { border: 1px solid var(--line); border-radius: var(--radius-xl); padding: 28px; background: rgba(255,255,255,0.055); display: grid; grid-template-columns: 1fr 0.7fr; gap: 28px; align-items: center; }
+  .about-card p { color: var(--muted); margin-top: 12px; }
+  .checklist { display: grid; gap: 10px; }
+  .checklist span { border: 1px solid var(--line); border-radius: 16px; padding: 12px 14px; background: rgba(255,255,255,0.045); color: #dbeafe; font-weight: 700; font-size: 13px; }
+
+  .contact { padding: 52px 0 78px; }
+  .contact-card { border: 1px solid var(--line); border-radius: 34px; background: linear-gradient(135deg, rgba(139,92,246,0.23), rgba(34,211,238,0.13)); padding: 34px; display: flex; align-items: center; justify-content: space-between; gap: 24px; box-shadow: var(--shadow); }
+  .contact-card p { color: var(--muted); max-width: 620px; margin-top: 10px; }
+
+  footer { border-top: 1px solid var(--line); padding: 24px 0 34px; color: var(--soft); font-size: 13px; }
+  .footer-inner { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; padding-top: 62px; }
+    .project-grid { grid-template-columns: 1fr; }
+    .project-card.featured { grid-column: auto; }
+    .stack-grid, .value-grid { grid-template-columns: repeat(2, 1fr); }
+    .about-card, .contact-card { grid-template-columns: 1fr; display: grid; }
+  }
+
+  @media (max-width: 620px) {
+    .shell, .nav-inner { width: min(100% - 28px, var(--max)); }
+    .brand-copy span, .nav-links a[href="#stack"], .nav-links a[href="#about"] { display: none; }
+    .nav-inner { min-height: 64px; }
+    .hero { padding: 48px 0 34px; }
+    h1 { font-size: 44px; }
+    .lead { font-size: 16px; }
+    .metrics { grid-template-columns: 1fr; }
+    .stack-grid, .value-grid { grid-template-columns: 1fr; }
+    .project-card, .about-card, .contact-card { border-radius: 22px; padding: 20px; }
+    .section-head { display: block; }
+    .section-head p { margin-top: 10px; }
+  }
+</style>
+</head>
+<body>
+  <nav class="nav">
+    <div class="nav-inner">
+      <a class="brand-mark" href="#top" aria-label="Gowtham portfolio home">
+        <div class="avatar">G</div>
+        <div class="brand-copy">
+          <strong>Gowtham</strong>
+          <span>AI Agent Developer</span>
+        </div>
+      </a>
+      <div class="nav-links" aria-label="Primary navigation">
+        <a href="#projects">Projects</a>
+        <a href="#stack">Stack</a>
+        <a href="#about">About</a>
+        <a class="btn primary" href="https://github.com/gowtham960" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </div>
+  </nav>
+
+  <main id="top" class="shell">
+    <section class="hero">
+      <div>
+        <div class="eyebrow"><span class="pulse"></span> Production-minded AI agents, RAG, and automation</div>
+        <h1>Building <span class="gradient-text">AI systems</span> that move from demo to deployed.</h1>
+        <p class="lead">I design and ship agentic applications that read documents, inspect code, evaluate risk, and produce useful decisions backed by real evidence.</p>
+        <div class="hero-actions">
+          <a class="btn primary" href="#projects">View projects</a>
+          <a class="btn ghost" href="https://github.com/gowtham960" target="_blank" rel="noopener">github.com/gowtham960</a>
+        </div>
+      </div>
+
+      <aside class="hero-panel" aria-label="Portfolio summary">
+        <div class="terminal">
+          <div class="terminal-top"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+          <div class="terminal-body">
+            <div class="terminal-line"><span>$</span> run agent_portfolio.scan()</div>
+            <div class="terminal-line"><strong>3 projects found</strong>: code review, fraud detection, construction RAG</div>
+            <div class="terminal-line"><span>$</span> evaluate_signal()</div>
+            <div class="terminal-line"><strong>Output:</strong> practical AI engineering, deployed apps, API integrations</div>
+          </div>
+        </div>
+        <div class="metrics">
+          <div class="metric"><strong>3</strong><span>Flagship projects</span></div>
+          <div class="metric"><strong>95%+</strong><span>RAG eval score</span></div>
+          <div class="metric"><strong>6</strong><span>Risk checks</span></div>
+        </div>
+      </aside>
+    </section>
+
+    <section id="projects">
+      <div class="section-head">
+        <div>
+          <div class="section-kicker">Selected work</div>
+          <h2>Projects with clear use cases, not toy demos.</h2>
+        </div>
+        <p>Each project focuses on a real workflow: reviewing pull requests, assessing website trust, or analyzing construction change-order evidence.</p>
+      </div>
+
+      <div class="project-grid">
+        <article class="project-card featured" style="--accent:#f59e0b">
+          <div class="card-head">
+            <div class="icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="26" height="26" stroke="#fbbf24" stroke-width="1.8" fill="none"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>
+            </div>
+            <span class="status">Deployed full-stack</span>
+          </div>
+          <h3>Alter Built AI</h3>
+          <p>Agentic RAG system for construction change-order intelligence. Users upload contracts, schedules, site notes, weather records, and RFIs, then ask whether a delay event qualifies for a schedule extension or cost claim.</p>
+          <div class="proof">
+            <span>Evidence-backed answers with confidence levels and source-aware reasoning.</span>
+            <span>Parses PDF, DOCX, XLSX, and CSV project documents.</span>
+            <span>Built with React/Vite, FastAPI, Supabase, Groq, Docker, Vercel, and Render.</span>
+          </div>
+          <div class="tags"><span class="tag">Agentic RAG</span><span class="tag">FastAPI</span><span class="tag">React</span><span class="tag">Supabase</span><span class="tag">Groq</span></div>
+          <div class="card-actions">
+            <a class="mini-link" href="https://alter-built-ai.vercel.app" target="_blank" rel="noopener">Live demo -></a>
+            <a class="mini-link" href="https://github.com/gowtham960/Alter-built-Ai" target="_blank" rel="noopener">GitHub -></a>
+          </div>
+        </article>
+
+        <article class="project-card" style="--accent:#8b5cf6">
+          <div class="card-head">
+            <div class="icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="26" height="26" stroke="#c4b5fd" stroke-width="1.8" fill="none"><circle cx="6" cy="6" r="3"/><circle cx="18" cy="18" r="3"/><path d="M6 9v9a3 3 0 0 0 3 3h6M18 15V6M14 6l4-4 4 4"/></svg>
+            </div>
+            <span class="status">Live webhook agent</span>
+          </div>
+          <h3>PR Reviewer Agent</h3>
+          <p>Autonomous Claude-powered reviewer that reacts to GitHub pull requests, analyzes code changes, posts review feedback, and flags security risks before human review.</p>
+          <div class="proof">
+            <span>GitHub webhooks with HMAC verification.</span>
+            <span>Multi-tool agent loop with circuit breaker behavior.</span>
+            <span>Deployed on Render with Node.js and Express.</span>
+          </div>
+          <div class="tags"><span class="tag">Node.js</span><span class="tag">Claude</span><span class="tag">GitHub API</span><span class="tag">Render</span></div>
+          <div class="card-actions">
+            <a class="mini-link" href="https://pr-reviewer-agent-phj1.onrender.com" target="_blank" rel="noopener">Live demo -></a>
+            <a class="mini-link" href="https://github.com/gowtham960/pr-reviewer-agent" target="_blank" rel="noopener">GitHub -></a>
+          </div>
+        </article>
+
+        <article class="project-card" style="--accent:#22d3ee">
+          <div class="card-head">
+            <div class="icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="26" height="26" stroke="#67e8f9" stroke-width="1.8" fill="none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-5"/></svg>
+            </div>
+            <span class="status">MCP-ready</span>
+          </div>
+          <h3>Website Trust Agent</h3>
+          <p>Security agent that investigates a domain and returns a LOW / MEDIUM / HIGH risk verdict by combining infrastructure, reputation, and content signals.</p>
+          <div class="proof">
+            <span>WHOIS, SSL, SPF/DMARC, VirusTotal, content, and reputation checks.</span>
+            <span>Claude Desktop integration through MCP.</span>
+            <span>Designed to weigh conflicting risk signals.</span>
+          </div>
+          <div class="tags"><span class="tag">Node.js</span><span class="tag">MCP</span><span class="tag">VirusTotal</span><span class="tag">Security</span></div>
+          <div class="card-actions">
+            <a class="mini-link" href="https://github.com/gowtham960/website-trust-agent" target="_blank" rel="noopener">GitHub -></a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="stack">
+      <div class="section-head">
+        <div>
+          <div class="section-kicker">Technical stack</div>
+          <h2>Tools I use to ship AI workflows.</h2>
+        </div>
+      </div>
+      <div class="stack-grid">
+        <div class="tile"><strong>Agent orchestration</strong><span>Claude API, Groq LLM, tool loops, MCP protocol</span></div>
+        <div class="tile"><strong>Backend</strong><span>FastAPI, Node.js, Express, webhook handling, API design</span></div>
+        <div class="tile"><strong>Frontend</strong><span>React, Vite, accessible UI, deployment-ready static apps</span></div>
+        <div class="tile"><strong>Data + deploy</strong><span>Supabase, Docker, Vercel, Render, GitHub integrations</span></div>
+      </div>
+    </section>
+
+    <section id="about">
+      <div class="about-card">
+        <div>
+          <div class="section-kicker">Positioning</div>
+          <h2>AI agent developer focused on useful automation.</h2>
+          <p>I like building systems that connect LLM reasoning to real tools: repositories, documents, APIs, security checks, and production web apps. My projects show the same pattern: identify a manual expert workflow, connect the right data sources, and return a decision people can act on.</p>
+        </div>
+        <div class="checklist">
+          <span>Builds with deployment in mind</span>
+          <span>Comfortable across frontend + backend</span>
+          <span>Prioritizes evidence-backed outputs</span>
+          <span>Turns narrow workflows into agent products</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="contact" id="contact">
+      <div class="contact-card">
+        <div>
+          <div class="section-kicker">Contact</div>
+          <h2>Want to see the code?</h2>
+          <p>Explore the repositories, demos, and implementation details on GitHub.</p>
+        </div>
+        <a class="btn primary" href="https://github.com/gowtham960" target="_blank" rel="noopener">Open GitHub</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="shell footer-inner">
+      <span>Gowtham - AI Agent Developer</span>
+      <span>Built for GitHub Pages, Vercel, Netlify, or any static host.</span>
+    </div>
+  </footer>
+</body>
+</html>
